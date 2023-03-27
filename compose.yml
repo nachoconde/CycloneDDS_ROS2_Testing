@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  roshumble_1:
+    container_name: roshumble1
+    image: osrf/ros2:nightly-rmw
+    network_mode: host
+    privileged: true
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=file:///dds.xml
+      - ROS_DOMAIN_ID=1
+    command: bash -c "source ./ros_entrypoints.sh; ros2 run demo_nodes_cpp listener"
+    volumes:
+      - ${PWD}/cyclonedds.xml:/dds.xml
+
+  roshumble_2:
+    container_name: roshumble2
+    image: osrf/ros2:nightly-rmw
+    network_mode: host
+    privileged: true
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=file:///dds.xml
+      - ROS_DOMAIN_ID=1
+    command: bash -c "source ./ros_entrypoints.sh; ros2 run demo_nodes_cpp talker"
+    volumes:
+      - ${PWD}/cyclonedds.xml:/dds.xml
